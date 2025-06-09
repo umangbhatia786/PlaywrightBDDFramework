@@ -7,18 +7,42 @@ This project is an end-to-end automation framework for an ecommerce web applicat
 
 ## Architecture
 
-```mermaid
-graph TD
-    A["Feature Files<br/>(.feature)"] -->|"Gherkin Steps"| B["Step Definitions"]
-    B -->|"Calls"| C["Page Objects"]
-    C -->|"Uses"| D["Playwright API"]
-    B -->|"Hooks, Context"| E["Support Files"]
-    F["Utils"] --> C
-    G["Reports & Screenshots"] <-- B
-    subgraph "Test Execution"
-        B
-        E
-    end
+```
+┌─────────────────┐    Gherkin Steps    ┌─────────────────┐
+│ Feature Files   │ ──────────────────► │ Step Definitions│
+│   (.feature)    │                     │                 │
+└─────────────────┘                     └─────────────────┘
+                                                 │
+                                                 │ Calls
+                                                 ▼
+                                        ┌─────────────────┐
+                                        │  Page Objects   │
+                                        │                 │
+                                        └─────────────────┘
+                                                 │
+                                                 │ Uses
+                                                 ▼
+                                        ┌─────────────────┐
+                                        │  Playwright API │
+                                        │                 │
+                                        └─────────────────┘
+
+┌─────────────────┐                     ┌─────────────────┐
+│     Utils       │ ──────────────────► │  Page Objects   │
+│                 │                     │                 │
+└─────────────────┘                     └─────────────────┘
+
+┌─────────────────┐    Hooks/Context    ┌─────────────────┐
+│ Support Files   │ ◄─────────────────► │ Step Definitions│
+│                 │                     │                 │
+└─────────────────┘                     └─────────────────┘
+                                                 │
+                                                 │ Generates
+                                                 ▼
+                                        ┌─────────────────┐
+                                        │Reports &        │
+                                        │Screenshots      │
+                                        └─────────────────┘
 ```
 
 - **Feature Files**: Written in Gherkin syntax, describe user scenarios and acceptance criteria.
