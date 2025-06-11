@@ -10,12 +10,12 @@ Before({ timeout: 100 * 1000, name: "Setting up the browser and page object mana
     this.poManager = new POManager(this.page);
 });
 
-Before({ timeout: 100 * 1000, name: "Login into the Ecom application", order:2}, async function () {
+Before({ timeout: 100 * 1000, name: "Login into the Ecom application", order:2, tags:"@EcomTest"}, async function () {
 
     const products = this.page.locator(".card-body");
-    const loginPage = this.poManager.getLoginPage();
-    await loginPage.goTo();
-    await loginPage.validLogin("umangbhatia1993@gmail.com","Abcd@12345");
+    this.loginPage = this.poManager.getLoginPage();
+    await this.loginPage.goTo();
+    await this.loginPage.validLogin("umangbhatia1993@gmail.com","Abcd@12345");
 });
 
 AfterStep({ timeout: 100 * 1000, name: "Take a screenshot after step if it fails", tags:"@EcomTest"}, async function ({result}) {
