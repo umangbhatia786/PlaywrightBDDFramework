@@ -6,3 +6,5 @@ test_reports/
 tests/
 state.json
 .DS_Store
+/allure-results/
+/allure-report/

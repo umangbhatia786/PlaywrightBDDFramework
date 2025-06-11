@@ -73,9 +73,14 @@ PlayWrightAutomation/
 │   ├── OrdersReviewPage.js
 │   └── OrdersHistoryPage.js
 ├── utils/
-│   └── APiUtils.js
+│   ├── APiUtils.js
+│   └── cucumber-to-allure.js
 ├── screenshot/
 ├── test_reports/
+│   ├── cucumber_report.html
+│   └── cucumber_report.json
+├── allure-results/
+├── allure-report/
 ├── cucumber.js
 ├── package.json
 ├── playwright.config.js
@@ -113,33 +118,55 @@ npx playwright install --with-deps
 
 ### Run All Tests
 ```sh
-npx cucumber-js
+npm run test:cucumber
 ```
 
-### Run Tests by Tag
+### Run Tests by Tag (Default: @Regression)
 ```sh
 npx cucumber-js --tags "@Regression"
 ```
 
 ### Run Tests in Parallel
 ```sh
-npx cucumber-js --parallel 4
+npx cucumber-js --parallel 4 --tags "@Regression"
 ```
 _Change `4` to the desired number of parallel workers._
 
-### Generate HTML Report
-After running tests, open the report at `test_reports/report.html`.
+### Generate Reports
+
+#### HTML Report
+After running tests, open the report at `test_reports/cucumber_report.html`.
+
+#### Allure Report (Recommended)
+```sh
+# Run tests and generate Allure report in one command
+npm run test:allure
+
+# Or step by step:
+npm run test:cucumber        # Run tests
+npm run allure:generate      # Convert JSON to Allure format & generate report
+npm run allure:open          # Open Allure report in browser
+```
+
+The Allure report provides:
+- ✅ **Rich Visual Interface**: Beautiful charts, graphs, and detailed test results
+- ✅ **Test History**: Track test trends over time
+- ✅ **Step-by-Step Details**: See each test step with timing information
+- ✅ **Screenshots**: Automatic screenshot capture on failures
+- ✅ **Tags & Categories**: Filter tests by tags and features
 
 ---
 
 ## Key Features
-- **BDD with Cucumber.js**: Write tests in plain English.
-- **Playwright Integration**: Fast, reliable browser automation.
+- **BDD with Cucumber.js**: Write tests in plain English using Gherkin syntax.
+- **Playwright Integration**: Fast, reliable browser automation across Chrome, Firefox, and Safari.
 - **Page Object Model**: Clean separation of test logic and UI interactions.
-- **Hooks & Context**: Powerful setup/teardown and context sharing.
-- **Automatic Screenshots**: Captures screenshots on step failure.
-- **HTML Reporting**: Visual test results for easy analysis.
+- **Hooks & Context**: Powerful setup/teardown and context sharing between steps.
+- **Automatic Screenshots**: Captures screenshots on step failure for debugging.
+- **Dual Reporting**: Both HTML and Allure reports for comprehensive test analysis.
+- **Allure Integration**: Rich, interactive reports with charts, trends, and detailed test insights.
 - **Parallel Execution**: Speed up test runs with parallel workers.
+- **Tag-based Filtering**: Run specific test suites using tags like @Regression.
 
 ---
 
@@ -152,20 +179,26 @@ After running tests, open the report at `test_reports/report.html`.
 ---
 
 ## Troubleshooting
-- Ensure all dependencies are installed (`npm install`).
-- If browsers are missing, run `npx playwright install --with-deps`.
-- For flaky tests, use the `--retry` option (see `cucumber.js`).
-- Check `screenshot/` and `test_reports/` for debugging failed tests.
+- **Dependencies**: Ensure all dependencies are installed (`npm install`).
+- **Browsers**: If browsers are missing, run `npx playwright install --with-deps`.
+- **Flaky Tests**: Use the `--retry` option (configured in `cucumber.js`).
+- **Failed Tests**: Check `screenshot/` and `test_reports/` for debugging information.
+- **Allure Issues**: If Allure reports are empty, ensure tests ran successfully and JSON was generated.
+- **NPM Registry**: If getting authentication errors, ensure using public registry for package installation.
 
 ---
 
 ## Useful Commands
 | Command | Description |
 |---------|-------------|
-| `npx cucumber-js` | Run all tests |
+| `npm run test:cucumber` | Run tests with @Regression tag |
+| `npm run test:allure` | Run tests + generate & open Allure report |
+| `npm run allure:generate` | Convert Cucumber JSON to Allure format and generate report |
+| `npm run allure:open` | Open existing Allure report in browser |
 | `npx cucumber-js --tags "@tag"` | Run tests with a specific tag |
 | `npx cucumber-js --parallel N` | Run tests in parallel (N workers) |
 | `npx playwright install --with-deps` | Install Playwright browsers |
+| `npm run convert:allure` | Convert Cucumber JSON to Allure format only |
 
 ---
 
