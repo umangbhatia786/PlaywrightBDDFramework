@@ -37,5 +37,16 @@ class DashboardPage {
         await this.page.waitForLoadState('networkidle');
     }
 
+    async clickViewForProduct(productName) {
+        const count = await this.products.count();
+        for (let i = 0; i < count; ++i) {
+            if (await this.products.nth(i).locator("b").textContent() === productName) {
+                //click view
+                await this.products.nth(i).locator("text= View").click();
+                break;
+            }
+        }
+    }
+
 }
 module.exports = { DashboardPage };
