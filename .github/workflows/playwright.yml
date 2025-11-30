@@ -8,6 +8,8 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -22,9 +24,18 @@ jobs:
       run: npm install @cucumber/cucumber
     - name: Run Cucumber tests with Regression tag
       run: npx cucumber-js --tags="@Regression" --exit
+    - name: Generate Allure Report
+      if: always()
+      run: npm run allure:generate
     - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: playwright-report
         path: test_reports/
         retention-days: 30
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./allure-report
